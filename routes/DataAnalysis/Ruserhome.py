@@ -79,7 +79,7 @@ def GetAll(current_user):
             else:
                 _count += 1
                 data['UHall'][0]['SData']['HHUDay'] = 'All'
-                data['UHall'][0]['SData']['HHUDate'] = _data.HProinCreatedD
+                # data['UHall'][0]['SData']['HHUDate'] = _data.HProinCreatedD
 
                 data['UHall'][1]['DData'].append(
                     {

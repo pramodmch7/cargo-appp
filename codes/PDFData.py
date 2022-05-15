@@ -14,7 +14,7 @@ def pdfData(Udata, LrNo, AdvanceAmt, data):
         'DLocation': ['Delivery To ', data['hpkglocationto']],
 
         'PName': ['Package Name ', data['hpkgname']],
-        'PWeight': ['Weight ', data['hpkgweight']],
+        'PWeight': ['Weight ', float(data['hpkgweight'])/1000],
         'PArricle': ['No of Article ', data['hpkgarticlescount']],
 
         'TC': ['Transporting Charges ', float(data['hpkgtransportingcharges'])],

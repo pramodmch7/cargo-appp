@@ -1,4 +1,3 @@
-from tkinter import Pack
 from flask import Blueprint, jsonify, request, current_app as app, make_response, send_from_directory
 import json
 import datetime
@@ -340,31 +339,50 @@ def getBulkDeliverPackages(current_user):
     return{'status': 200, 'message': 'Package has been dispatched', 'code': f'Delivered'}
 
 
-@PackageinfoRoute.route('/api/udata/<id>', methods=['PUT'])
+@PackageinfoRoute.route('/api/upkg/<id>', methods=['PUT'])
 @token_required
 def UpdateData(current_user, id):
     data = request.get_json()
     DBData = PackageinfoDetails.getById(id)
+    fileId = str(ID.generate())
+
+    serialNo = format(int(DBData.HPkgLRNo), '05d')
+
     if DBData:
-        DBData.HPkgLRNo = data['hpkglrno']
+        PackageDeliveryDate = datetime.fromisoformat(data['PADD']).date()
+        AdvanceAmt = 0
+        if data['hpkgadvanceamount'] != '':
+            AdvanceAmt = data['hpkgadvanceamount']
+
+        # DBData.HPkgLRNo = data['hpkglrno']
         DBData.HPkgCustomerFromName = data['hpkgcustomerfromname']
         DBData.HPkgLocationFrom = data['hpkglocationfrom']
         DBData.HPkgPhoneFrom = data['hpkgphonefrom']
+        DBData.HPkgFragile = data['hpkgfragile']
         DBData.HPkgCustomerToName = data['hpkgcustomertoname']
         DBData.HPkgLocationTo = data['hpkglocationto']
         DBData.HPkgPhoneTo = data['hpkgphoneto']
         DBData.HPkgArticlesCount = data['hpkgarticlescount']
         DBData.HPkgTransportingCharges = data['hpkgtransportingcharges']
         DBData.HPkgLoadingCharges = data['hpkgloadingcharges']
-        DBData.HPkgApproximateDeliveryDate = data['hpkgapproximatedeliverydate']
-        DBData.HPkgAdvanceAmount = data['hpkgadvanceamount']
-        DBData.HPkgBalanceAmount = data['hpkgbalanceamount']
-        DBData.HPkgStatusFrom = data['hpkgstatusfrom']
-        DBData.HPkgStatusCodeFrom = data['hpkgstatuscodefrom']
-        DBData.HPkgAllStatus = data['hpkgallstatus']
-        DBData.HPkgQrCode = data['hpkgqrcode']
-        DBData.HPkgCreatedD = datetime.datetime.today.date()
-        DBData.HPkgCreatedDT = datetime.datetime.today()
-        DBData.HPkgCreatedBy = current_user.HUsrEmail
+        DBData.HPkgApproximateDeliveryDate = PackageDeliveryDate
+        DBData.HPkgAdvanceAmount = AdvanceAmt
+        DBData.HPkgBalanceAmount = float(data['hpkgtransportingcharges'])+float(
+            data['hpkgloadingcharges'])-float(AdvanceAmt)
+        # DBData.HPkgStatusFrom = data['hpkgstatusfrom']
+        # DBData.HPkgStatusCodeFrom = data['hpkgstatuscodefrom']
+        # DBData.HPkgAllStatus = data['hpkgallstatus']
+        # DBData.HPkgQrCode = data['hpkgqrcode']
+        DBData.HPkgUpdatedD = datetime.today().date()
+        DBData.HPkgUpdatedDT = datetime.today()
+        DBData.HPkgUpdatedBy = current_user.HUsrEmail
+        DBData.HPkgSlipName = fileId
+
         PackageinfoDetails.updateDB(PackageinfoDetails)
+
+        Data = pdfData(current_user, DBData.HPkgLRNo, AdvanceAmt, data)
+
+        PDF()
+        PDFName = GenPDF(serialNo, datetime.today().date(), Data, fileId)
+
     return{'status': 200, 'message': 'Data Updated', 'code': f'Update'}
