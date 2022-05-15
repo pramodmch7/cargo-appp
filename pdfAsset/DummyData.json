@@ -1,0 +1,46 @@
+{
+    "CName": [
+        "Mr.",
+        "Hanuman"
+    ],
+    "CPhone": [
+        "Mobile: ",
+        "7777777"
+    ],
+    "MName": [
+        "Quotation for Model: ",
+        25000.0
+    ],
+    "COV": [
+        "1. Cost of Vehicle: ",
+        25000.0
+    ],
+    "CI": [
+        "2. Comp. Insurance: ",
+        "500"
+    ],
+    "LTT": [
+        "3. Life Time Tax + IC: ",
+        "200"
+    ],
+    "OnR": [
+        "4. On Road: ",
+        25700.0
+    ],
+    "HC": [
+        "a. Hypothecation Charges: ",
+        "500"
+    ],
+    "ACC": [
+        "b. Accessories: ",
+        "3000"
+    ],
+    "GL": [
+        "c. Good Life: ",
+        "200"
+    ],
+    "TP": [
+        "Total: ",
+        29400.0
+    ]
+}
