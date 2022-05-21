@@ -62,6 +62,10 @@ class BranchinfoDetails(db.Model):
     def getByBranchName(cls, _Bname):
         return cls.query.filter_by(HBrName=_Bname).first()
 
+    @classmethod
+    def getByLocation(cls, _BLocation):
+        return cls.query.filter_by(HBrLocation=_BLocation).first()
+
     def saveDB(self):
         db.session.add(self)
         db.session.commit()

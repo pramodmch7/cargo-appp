@@ -43,7 +43,7 @@ def GetAll(current_user):
                     {
                         'slno': index+1,
                         'HHUCount': _count,
-                        'lrno': format(int(_data.HPkgLRNo), '05d'),
+                        'lrno': _data.HPkgLRNo,
                         'PN': _data.HPkgName,
                         'HHUCustomerName': _data.HPkgCustomerFromName,
                         'HHUCustomerPhone': _data.HPkgPhoneFrom,
@@ -64,7 +64,7 @@ def GetAll(current_user):
                     {
                         'slno': index+1,
                         'HHUCount': _count,
-                        'lrno': format(int(_data.HPkgLRNo), '05d'),
+                        'lrno': _data.HPkgLRNo,
                         'PN': _data.HPkgName,
                         'HHUCustomerName': _data.HPkgCustomerFromName,
                         'HHUCustomerPhone': _data.HPkgPhoneFrom,
@@ -85,7 +85,7 @@ def GetAll(current_user):
                     {
                         'slno': index+1,
                         'HHUCount': _count,
-                        'lrno': format(int(_data.HPkgLRNo), '05d'),
+                        'lrno': _data.HPkgLRNo,
                         'PN': _data.HPkgName,
                         'HHUCustomerName': _data.HPkgCustomerFromName,
                         'HHUCustomerPhone': _data.HPkgPhoneFrom,

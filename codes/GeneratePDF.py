@@ -1,3 +1,5 @@
+from flask import current_app as app
+import os
 from fpdf import FPDF, HTMLMixin
 import num2words
 import time
@@ -198,7 +200,8 @@ def GenPDF(serialNo, date, data, FileId):
     # pdfName = f"{data['CName'][1]}-{data['CPhone'][1]}-{time.time()}.pdf"
 
     # pdfName = f"pdfAsset\\CRecip\\{data['CName'][1]}-{data['CPhone'][1]}-{FileId}"
-    pdfName = f"pdfAsset\\CRecip\\{FileId}"
+    # pdfName = f"pdfAsset\\CRecip\\{FileId}"
+    pdfName = os.path.join(app.config['upload_path'], FileId)
 
     Pdf.output(pdfName)
     return(pdfName)

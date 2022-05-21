@@ -8,7 +8,6 @@ def Convert(a, b):
     Data['PH'] = b.HUsrPhone
     Data['ADD'] = b.HUsrAddress
     Data['EM'] = b.HUsrEmail
-    Data['PWD'] = b.HUsrPassword
     Data['LO'] = b.HUsrLocation
     Data['AD'] = b.HUsrAdmin
     Data['ACT'] = b.HUsrActive

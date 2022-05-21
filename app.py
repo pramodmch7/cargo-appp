@@ -12,6 +12,7 @@ from routes.Rtransportationinfo import *
 from routes.DataAnalysis.Ruserhome import UserHome
 from routes.DataAnalysis.Rreports import FReports
 
+
 # from resources.Rusersnew import *
 # from resources.Rroles import *
 
@@ -24,7 +25,9 @@ migrate = Migrate(app, db)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///Cargodata.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'key'
-app.config['upload_path'] = 'D:\\1Projects\\Komitla\\Cargo-AppV7\\cargo-backend\\pdfAsset\\CRecip'
+# app.config['upload_path'] = 'D:\\1Projects\\Komitla\\Cargo-AppV7\\cargo-backend\\pdfAsset\\CRecip'
+app.config['upload_path'] = '/home/ubuntu/cargo-appv7/cargo-appp/pdfAsset/CRecip'
+
 
 db.init_app(app)
 

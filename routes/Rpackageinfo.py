@@ -16,6 +16,7 @@ from models.packageinfo import *
 from models.userdetailsn import UserdetailsnDetails
 from models.transportationinfo import TransportationinfoDetails
 from models.customerdetails import CustomerDetails
+from models.branchinfo import BranchinfoDetails
 from codes.packageinfodicGen import *
 from codes.AuthToken import token_required
 from codes.PDFData import pdfData
@@ -63,7 +64,8 @@ def getDispatchPackages(current_user):
             if _data.HPkgLocationFrom == current_user.HUsrLocation or current_user.HUsrAdmin:
                 Data = Convert_Format(index, _data)
                 data.append(Data)
-    # print(data)
+    # print('Yes This is the Data')
+    print(data)
     return{'message': data, 'status': 200}
 
 
@@ -119,13 +121,17 @@ def AddNewData(current_user):
 
     UNumber = f'Pkg{len(PackageinfoDetails.getAll())+1}'
 
+    DBData = PackageinfoDetails.getbyBranch(current_user.HUsrLocation)
+    BranchData = BranchinfoDetails.getByLocation(current_user.HUsrLocation)
+    branch_code = BranchData.HBrBranchCode
     serialNo = None
 
-    if len(PackageinfoDetails.getAll()) <= 0:
-        serialNo = '00001'
+    if len(DBData) <= 0:
+        serialNo = f'{branch_code}-00001'
     else:
-        serialNo = format(
-            int(PackageinfoDetails.getAll()[-1].HPkgLRNo) + 1, '05d')
+        # sl_No = format(int(DBData[-1].HPkgLRNo[-5:]) + 1, '05d')
+        sl_No = format(int(DBData[-1].HPkgLRNo.split('-')[1]) + 1, '05d')
+        serialNo = f'{branch_code}-{sl_No}'
 
     img = qrcode.make(UNumber)
 
@@ -148,7 +154,7 @@ def AddNewData(current_user):
     NewData = PackageinfoDetails(
         id=Id,
         HPkgLRNo=serialNo,
-        HPkgName=data['hpkgname'],
+        # HPkgName=data['hpkgname'],
         HPkgWeight=data['hpkgweight'],
         HPkgFragile=data['hpkgfragile'],
         HPkgCustomerFromName=data['hpkgcustomerfromname'],
@@ -230,15 +236,17 @@ def DownloadLSFile(current_user, id):
 @PackageinfoRoute.route('/api/gdpidata', methods=['GET'])
 @token_required
 def GetDefaultData(current_user):
-    DBData = PackageinfoDetails.getAll()
-
+    DBData = PackageinfoDetails.getbyBranch(current_user.HUsrLocation)
+    BranchData = BranchinfoDetails.getByLocation(current_user.HUsrLocation)
+    branch_code = BranchData.HBrBranchCode
     serialNo = None
 
-    if len(PackageinfoDetails.getAll()) <= 0:
-        serialNo = '00001'
+    if len(DBData) <= 0:
+        serialNo = f'{branch_code}-00001'
     else:
-        serialNo = format(
-            int(PackageinfoDetails.getAll()[-1].HPkgLRNo) + 1, '05d')
+        # sl_No = format(int(DBData[-1].HPkgLRNo[-5:]) + 1, '05d')
+        sl_No = format(int(DBData[-1].HPkgLRNo.split('-')[1]) + 1, '05d')
+        serialNo = f'{branch_code}-{sl_No}'
 
     data = {
         'ledserno': serialNo,

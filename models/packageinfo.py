@@ -20,7 +20,7 @@ class PackageinfoDetails(db.Model):
     UpdatedBy = db.Column(db.String(512))
     Deleted = db.Column(db.Boolean(), default=False)
     FDeleted = db.Column(db.Boolean(), default=False)
-    HPkgLRNo = db.Column(db.Integer(), unique=True)
+    HPkgLRNo = db.Column(db.String(32), unique=True)
     HPkgName = db.Column(db.String(256), unique=False)
     HPkgFragile = db.Column(db.Boolean(), default=False)
     HPkgVehicleDetails = db.Column(db.String(128), unique=False)
@@ -70,7 +70,6 @@ class PackageinfoDetails(db.Model):
         self,
         id,
         HPkgLRNo,
-        HPkgName,
         HPkgFragile,
         HPkgWeight,
         HPkgCustomerFromName,
@@ -96,7 +95,6 @@ class PackageinfoDetails(db.Model):
     ):
         self.id = id
         self.HPkgLRNo = HPkgLRNo
-        self.HPkgName = HPkgName
         self.HPkgFragile = HPkgFragile
         self.HPkgWeight = HPkgWeight
         self.HPkgCustomerFromName = HPkgCustomerFromName
@@ -138,8 +136,21 @@ class PackageinfoDetails(db.Model):
         return cls.query.filter_by(HPkgStatusCodeFrom=_status)
 
     @classmethod
+    # Get Specific Package with Based on Status Code
+    def getbyBranch(cls, _Branch):
+        return cls.query.filter_by(HPkgLocationFrom=_Branch).all()
+
+    @classmethod
     def getByDates(cls, fdate, ldate):
         return cls.query.filter(cls.HPkgCreatedD.between(fdate, ldate)).all()
+
+    @classmethod
+    def getBranchGroups(cls, fdate, ldate):
+        return cls.query.filter(cls.HPkgCreatedD.between(fdate, ldate)).group_by(cls.HPkgLocationFrom).all()
+
+    # @classmethod
+    # def getBikeCount(cls):
+    #     return cls.query.with_entities(cls.HProinBikeID, func.count(cls.HProinBikeID)).group_by(cls.HProinBikeID).all()
 
     def saveDB(self):
         db.session.add(self)

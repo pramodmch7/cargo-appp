@@ -2,10 +2,11 @@ from datetime import datetime
 
 
 def Convert(a, b):
+    Status = b.HPkgAllStatus.split('|')[-2]
     Data = {}
+    Data["slno"] = a+1
     Data['id'] = b.id
     Data['hpkglrno'] = b.HPkgLRNo
-    Data['hpkgname'] = b.HPkgName
     Data['hpkgfragile'] = b.HPkgFragile
     Data['hpkgcustomerfromname'] = b.HPkgCustomerFromName
     Data['hpkglocationfrom'] = b.HPkgLocationFrom
@@ -14,19 +15,22 @@ def Convert(a, b):
     Data['hpkglocationto'] = b.HPkgLocationTo
     Data['hpkgphoneto'] = b.HPkgPhoneTo
     Data['hpkgarticlescount'] = b.HPkgArticlesCount
-    Data['hpkgweight'] = b.HPkgWeight
+    Data['hpkgweight'] = f'{int(b.HPkgWeight)/1000} kg'
     Data['hpkgtransportingcharges'] = b.HPkgTransportingCharges
     Data['hpkgloadingcharges'] = b.HPkgLoadingCharges
-    Data['hpkgapproximatedeliverydate'] = b.HPkgApproximateDeliveryDate
+    Data['hpkgapproximatedeliverydate'] = str(b.HPkgApproximateDeliveryDate)
     Data['hpkgadvanceamount'] = b.HPkgAdvanceAmount
     Data['hpkgbalanceamount'] = b.HPkgBalanceAmount
     Data['hpkgstatusfrom'] = b.HPkgStatusFrom
     Data['hpkgstatuscodefrom'] = b.HPkgStatusCodeFrom
     Data['hpkgallstatus'] = b.HPkgAllStatus
     Data['hpkgqrcode'] = b.HPkgQrCode
-    Data['hpkgcreatedd'] = b.HPkgCreatedD
-    Data['hpkgcreateddt'] = b.HPkgCreatedDT
+    Data['hpkgcreatedd'] = str(b.HPkgCreatedD)
+    Data['hpkgcreateddt'] = str(b.HPkgCreatedDT)
     Data['hpkgcreatedby'] = b.HPkgCreatedBy
+    Data['currentstatus'] = Status.split('~')[1]
+    # print(b.HPkgAllStatus.split('|')[-2])
+    # print(b.HPkgCreatedD)
     return Data
 
 
@@ -34,7 +38,7 @@ def Convert_Format(c, d):
     Data = {}
     Data["slno"] = c+1
     Data['id'] = d.id
-    Data['lrno'] = format(int(d.HPkgLRNo), '05d')
+    Data['lrno'] = d.HPkgLRNo
     Data['PN'] = d.HPkgName
 
     Data['PDIST'] = d.HPkgDistance
