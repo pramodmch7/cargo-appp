@@ -238,15 +238,18 @@ def DownloadLSFile(current_user, id):
 def GetDefaultData(current_user):
     DBData = PackageinfoDetails.getbyBranch(current_user.HUsrLocation)
     BranchData = BranchinfoDetails.getByLocation(current_user.HUsrLocation)
-    branch_code = BranchData.HBrBranchCode
+    branch_code = ''
     serialNo = None
 
+    if BranchData:
+        branch_code = f'{BranchData.HBrBranchCode}-'
+
     if len(DBData) <= 0:
-        serialNo = f'{branch_code}-00001'
+        serialNo = f'{branch_code}00001'
     else:
         # sl_No = format(int(DBData[-1].HPkgLRNo[-5:]) + 1, '05d')
         sl_No = format(int(DBData[-1].HPkgLRNo.split('-')[1]) + 1, '05d')
-        serialNo = f'{branch_code}-{sl_No}'
+        serialNo = f'{branch_code}{sl_No}'
 
     data = {
         'ledserno': serialNo,
